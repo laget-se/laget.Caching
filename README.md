@@ -20,7 +20,7 @@ var container = builder.Build();
 
 ## Usage
 #### ApplicationCache (`IApplicationCache`)
-Stores application-specific data, e.g application configuration that might only change between deployments/releases.
+Stores application-specific data, e.g application configuration that only change between deployments/releases.
 
 #### RequestCache (`IRequestCache`)
 Stores request-specific data, e.g. data used for a specific page that is fetched multiple times.
