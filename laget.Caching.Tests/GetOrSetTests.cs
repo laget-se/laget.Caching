@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using laget.Caching.Keys;
 using laget.Caching.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Xunit;
@@ -19,7 +20,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = "myKey";
+            var key = new ApplicationKey("key");
 
             var result = cache.GetOrSet<object>(key, obj);
             Assert.Same(obj, result);
@@ -33,8 +34,8 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key1 = "myKey";
-            var key2 = "Mykey";
+            var key1 = new ApplicationKey("key");
+            var key2 = new ApplicationKey("Key");
 
             var result = cache.GetOrSet<object>(key1, obj);
             Assert.Same(obj, result);
@@ -51,7 +52,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = "myKey";
+            var key = new ApplicationKey("key");
 
             var result = cache.GetOrSet<object>(key, obj);
 
@@ -66,7 +67,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = "myKey";
+            var key = new ApplicationKey("key");
 
             var result = await cache.GetOrSetAsync<object>(key, obj);
 
@@ -81,7 +82,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = "myKey";
+            var key = new ApplicationKey("key");
             var invoked = false;
 
             cache.Set<object>(key, obj);
@@ -97,7 +98,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = "myKey";
+            var key = new ApplicationKey("key");
 
             cache.Set<object>(key, obj);
 
@@ -128,7 +129,7 @@ namespace laget.Caching.Tests
                 while (!cts.IsCancellationRequested)
                 {
                     var entrySize = random.Next(0, 5);
-                    cache.Set<object>(random.Next(0, 10), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
+                    cache.Set<object>(new ApplicationKey(random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
                 }
             });
 
@@ -137,7 +138,7 @@ namespace laget.Caching.Tests
                 while (!cts.IsCancellationRequested)
                 {
                     var entrySize = random.Next(0, 5);
-                    cache.Set<object>(random.Next(0, 10), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
+                    cache.Set<object>(new ApplicationKey(random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
                 }
             });
 
@@ -146,7 +147,7 @@ namespace laget.Caching.Tests
                 while (!cts.IsCancellationRequested)
                 {
                     var entrySize = random.Next(0, 5);
-                    cache.Set<object>(random.Next(0, 10), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
+                    cache.Set<object>(new ApplicationKey(random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
                 }
             });
 
@@ -159,14 +160,7 @@ namespace laget.Caching.Tests
             Assert.Equal(TaskStatus.RanToCompletion, task1.Status);
             Assert.Equal(TaskStatus.RanToCompletion, task2.Status);
             Assert.Equal(TaskStatus.RanToCompletion, task3.Status);
-
-            //var cacheSize = 0;
-            //for (var i = 0; i < 10; i++)
-            //{
-            //    cacheSize += cache.Get<int>(i);
-            //}
-
-            //Assert.Equal(cacheSize, cache.Size);
+            
             Assert.InRange(cache.Count(), 0, 20);
         }
 

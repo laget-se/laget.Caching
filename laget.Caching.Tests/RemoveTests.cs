@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using laget.Caching.Keys;
+using Xunit;
 
 namespace laget.Caching.Tests
 {
@@ -14,7 +15,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = "myKey";
+            var key = new ApplicationKey("key");
 
             var result = cache.Set<object>(key, obj);
             Assert.Same(obj, result);
