@@ -1,14 +1,13 @@
 ﻿using laget.Caching.Interfaces;
-using laget.Caching.Keys;
 using laget.Caching.Options;
 
 namespace laget.Caching
 {
-    public interface IRequestCache
+    public interface IRequestCache : ICache
     {
     }
 
-    public class RequestCache : Cache, IApplicationCache
+    public class RequestCache : Cache, IRequestCache
     {
         public RequestCache()
             : base()

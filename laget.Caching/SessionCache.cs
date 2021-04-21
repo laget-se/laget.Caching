@@ -1,8 +1,9 @@
-﻿using laget.Caching.Options;
+﻿using laget.Caching.Interfaces;
+using laget.Caching.Options;
 
 namespace laget.Caching
 {
-    public interface ISessionCache
+    public interface ISessionCache : ICache
     {
     }
 
