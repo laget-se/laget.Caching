@@ -20,6 +20,8 @@ namespace laget.Caching.Interfaces
         Task<TItem> GetOrSetAsync<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
         TItem GetOrSet<TItem>(IKey key, Func<TItem> factory);
         Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory);
+        TItem GetOrSet<TItem>(IKey key, Func<TItem> factory, MemoryCacheEntryOptions options);
+        Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory, MemoryCacheEntryOptions options);
 
         void Remove<TItem>(IKey key);
         Task RemoveAsync<TItem>(IKey key);

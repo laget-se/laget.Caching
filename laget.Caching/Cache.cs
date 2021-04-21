@@ -76,18 +76,6 @@ namespace laget.Caching
             return await Task.Run(() => GetOrSet<TItem>(key, item));
         }
 
-        public TItem GetOrSet<TItem>(IKey key, Func<TItem> factory)
-        {
-            ValidateCacheKey(key);
-
-            return Entries.GetOrCreate<TItem>(key.ToString(), entry => factory());
-        }
-
-        public async Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory)
-        {
-            return await Task.Run(() => GetOrSet<TItem>(key, factory));
-        }
-
         public virtual TItem GetOrSet<TItem>(IKey key, object item, MemoryCacheEntryOptions options)
         {
             ValidateCacheKey(key);
@@ -103,6 +91,35 @@ namespace laget.Caching
         public virtual async Task<TItem> GetOrSetAsync<TItem>(IKey key, object item, MemoryCacheEntryOptions options)
         {
             return await Task.Run(() => GetOrSet<TItem>(key, item, options));
+        }
+
+        public TItem GetOrSet<TItem>(IKey key, Func<TItem> factory, MemoryCacheEntryOptions options)
+        {
+            ValidateCacheKey(key);
+
+            return (TItem)Entries.GetOrCreate(key.ToString(), entry =>
+            {
+                entry.SetValue(factory());
+                entry.SetOptions(options);
+                return entry.Value;
+            });
+        }
+
+        public async Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory, MemoryCacheEntryOptions options)
+        {
+            return await Task.Run(() => GetOrSet<TItem>(key, factory, options));
+        }
+
+        public TItem GetOrSet<TItem>(IKey key, Func<TItem> factory)
+        {
+            ValidateCacheKey(key);
+
+            return Entries.GetOrCreate<TItem>(key.ToString(), entry => factory());
+        }
+
+        public async Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory)
+        {
+            return await Task.Run(() => GetOrSet<TItem>(key, factory));
         }
 
         public virtual void Remove<TItem>(IKey key)
