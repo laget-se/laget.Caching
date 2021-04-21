@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace laget.Caching.Interfaces
@@ -17,6 +18,8 @@ namespace laget.Caching.Interfaces
         Task<TItem> GetOrSetAsync<TItem>(IKey key, object item);
         TItem GetOrSet<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
         Task<TItem> GetOrSetAsync<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
+        TItem GetOrSet<TItem>(IKey key, Func<TItem> factory);
+        Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory);
 
         void Remove<TItem>(IKey key);
         Task RemoveAsync<TItem>(IKey key);

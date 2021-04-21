@@ -76,6 +76,18 @@ namespace laget.Caching
             return await Task.Run(() => GetOrSet<TItem>(key, item));
         }
 
+        public TItem GetOrSet<TItem>(IKey key, Func<TItem> factory)
+        {
+            ValidateCacheKey(key);
+
+            return Entries.GetOrCreate<TItem>(key.ToString(), entry => factory());
+        }
+
+        public async Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory)
+        {
+            return await Task.Run(() => GetOrSet<TItem>(key, factory));
+        }
+
         public virtual TItem GetOrSet<TItem>(IKey key, object item, MemoryCacheEntryOptions options)
         {
             ValidateCacheKey(key);
