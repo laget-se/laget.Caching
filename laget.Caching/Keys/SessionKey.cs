@@ -1,26 +1,29 @@
-﻿using laget.Caching.Interfaces;
+﻿using System;
+using laget.Caching.Interfaces;
 
 namespace laget.Caching.Keys
 {
     public class SessionKey : IKey
     {
+        public string Type { get; }
         public string Key { get; }
         public string Session { get; }
 
-        public SessionKey(string key)
+        public SessionKey(Type type, string session, string key)
         {
-            Key = key;
-        }
+            if (string.IsNullOrWhiteSpace(session))
+                throw new ArgumentNullException(nameof(session));
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentNullException(nameof(key));
 
-        public SessionKey(string key, string session)
-        {
-            Key = key;
+            Type = type.Name.ToLowerInvariant();
             Session = session;
+            Key = key;
         }
 
         public override string ToString()
         {
-            return $"{Session}_{Key}";
+            return $"{Type}.{Session}.{Key}";
         }
     }
 }

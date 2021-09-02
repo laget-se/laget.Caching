@@ -15,7 +15,7 @@ namespace laget.Caching.Tests
         public void GetMissingKeyReturnsNull()
         {
             var cache = CreateCache();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             var result = cache.Get<object>(key);
             Assert.Null(result);
@@ -26,7 +26,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             var result = cache.Set<object>(key, obj);
             Assert.Same(obj, result);
@@ -35,12 +35,12 @@ namespace laget.Caching.Tests
             result = cache.Set<object>(key, obj2);
             Assert.Same(obj2, result);
 
-            result = cache.Get<object>(new ApplicationKey("key"));
+            result = cache.Get<object>(new ApplicationKey(typeof(object), "key"));
             Assert.Same(obj2, result);
         }
 
         [Fact]
-        public void SetDataToCacheWithNullKeyThrows()
+        public void SetDataToCacheWithNullKeyThrowsException()
         {
             var cache = CreateCache();
             var value = new object();
@@ -48,12 +48,10 @@ namespace laget.Caching.Tests
         }
 
         [Fact]
-        public void SetDataToCacheWithEmptyKeyThrows()
+        public void SetDataToCacheWithEmptyKeyThrowsException()
         {
             var cache = CreateCache();
-            var key = new ApplicationKey("");
-            var value = new object();
-            Assert.Throws<ArgumentNullException>(() => cache.Set<object>(key, value));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationKey(typeof(object), ""));
         }
     }
 }

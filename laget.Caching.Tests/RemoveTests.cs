@@ -15,7 +15,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             var result = cache.Set<object>(key, obj);
             Assert.Same(obj, result);

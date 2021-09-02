@@ -20,7 +20,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             var result = cache.GetOrSet<object>(key, obj);
             Assert.Same(obj, result);
@@ -34,8 +34,8 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key1 = new ApplicationKey("key");
-            var key2 = new ApplicationKey("Key");
+            var key1 = new ApplicationKey(typeof(object), "key");
+            var key2 = new ApplicationKey(typeof(object), "Key");
 
             var result = cache.GetOrSet<object>(key1, obj);
             Assert.Same(obj, result);
@@ -52,7 +52,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             var result = cache.GetOrSet<object>(key, obj);
 
@@ -67,7 +67,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             var result = await cache.GetOrSetAsync<object>(key, obj);
 
@@ -82,7 +82,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
             var invoked = false;
 
             cache.Set<object>(key, obj);
@@ -98,7 +98,7 @@ namespace laget.Caching.Tests
         {
             var cache = CreateCache();
             var obj = new object();
-            var key = new ApplicationKey("key");
+            var key = new ApplicationKey(typeof(object), "key");
 
             cache.Set<object>(key, obj);
 
@@ -129,7 +129,7 @@ namespace laget.Caching.Tests
                 while (!cts.IsCancellationRequested)
                 {
                     var entrySize = random.Next(0, 5);
-                    cache.Set<object>(new ApplicationKey(random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
+                    cache.Set<object>(new ApplicationKey(typeof(Random), random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
                 }
             });
 
@@ -138,7 +138,7 @@ namespace laget.Caching.Tests
                 while (!cts.IsCancellationRequested)
                 {
                     var entrySize = random.Next(0, 5);
-                    cache.Set<object>(new ApplicationKey(random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
+                    cache.Set<object>(new ApplicationKey(typeof(Random), random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
                 }
             });
 
@@ -147,7 +147,7 @@ namespace laget.Caching.Tests
                 while (!cts.IsCancellationRequested)
                 {
                     var entrySize = random.Next(0, 5);
-                    cache.Set<object>(new ApplicationKey(random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
+                    cache.Set<object>(new ApplicationKey(typeof(Random), random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
                 }
             });
 
@@ -165,21 +165,21 @@ namespace laget.Caching.Tests
         }
 
         [Fact]
-        public void GetDataFromCacheWithNullKeyThrows()
+        public void GetDataFromCacheWithNullKeyThrowsException()
         {
             var cache = CreateCache();
             Assert.Throws<ArgumentNullException>(() => cache.Get<object>(null));
         }
 
         [Fact]
-        public void GetOrSetFromCacheWithNullKeyThrows()
+        public void GetOrSetFromCacheWithNullKeyThrowsException()
         {
             var cache = CreateCache();
             Assert.Throws<ArgumentNullException>(() => cache.GetOrSet<object>(null, null));
         }
 
         [Fact]
-        public async Task GetOrCreateAsyncFromCacheWithNullKeyThrows()
+        public async Task GetOrCreateAsyncFromCacheWithNullKeyThrowsException()
         {
             var cache = CreateCache();
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await cache.GetOrSetAsync<object>(null, null));

@@ -28,7 +28,3 @@ Stores request-specific data, e.g. data used for a specific page that is fetched
 #### SessionCache (`ISessionCache`)
 Stores session-specific data, e.g. user data that does not change during a session.
 > If you store user-specific data that might change when a user changes their email address, or something alike, remember to flush the session cache or replace the old object with the new.
-
-
-```c#
-```
