@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
 using laget.Caching.Interfaces;
-using laget.Caching.Options;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace laget.Caching
+namespace laget.Caching.Stores
 {
-    public class Cache : ICache
+    public class Memory<TKey> : ICache
     {
         protected readonly MemoryCache Entries;
-        protected readonly CacheOptions Options;
 
-        public Cache()
+        public Memory()
         {
-            Options = new CacheOptions();
-            Entries = new MemoryCache(Options.MemoryCacheOptions);
+            Entries = new MemoryCache(new MemoryCacheOptions());
         }
 
-        public Cache(CacheOptions options)
+        public Memory(MemoryCacheOptions options)
         {
-            Options = options;
-            Entries = new MemoryCache(options.MemoryCacheOptions);
+            Entries = new MemoryCache(options);
         }
 
         public virtual TItem Get<TItem>(IKey key)
@@ -181,6 +177,9 @@ namespace laget.Caching
         {
             if (key == null || string.IsNullOrWhiteSpace(key.ToString()))
                 throw new ArgumentNullException(nameof(key));
+
+            if (key.GetType() != typeof(TKey))
+                throw new ArgumentOutOfRangeException(nameof(key));
         }
     }
 }

@@ -1,27 +1,23 @@
 ﻿using laget.Caching.Keys;
 using Xunit;
 
-namespace laget.Caching.Tests
+namespace laget.Caching.Tests.ApplicationCacheTests
 {
-    public class RemoveTests
+    public class GetTests
     {
         private static IApplicationCache CreateCache()
         {
             return new ApplicationCache();
         }
 
+
         [Fact]
-        public void RemoveRemoves()
+        public void GetMissingKeyReturnsNull()
         {
             var cache = CreateCache();
-            var obj = new object();
             var key = new ApplicationKey(typeof(object), "key");
 
-            var result = cache.Set<object>(key, obj);
-            Assert.Same(obj, result);
-
-            cache.Remove<object>(key);
-            result = cache.Get<object>(key);
+            var result = cache.Get<object>(key);
             Assert.Null(result);
         }
     }

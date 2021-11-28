@@ -2,11 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using laget.Caching.Keys;
-using laget.Caching.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Xunit;
 
-namespace laget.Caching.Tests
+namespace laget.Caching.Tests.ApplicationCacheTests
 {
     public class GetOrSetTests
     {
@@ -110,16 +109,13 @@ namespace laget.Caching.Tests
         [Fact]
         public void AddAndReplaceEntries_AreThreadSafe()
         {
-            var cache = new ApplicationCache(
-                new CacheOptions
-                {
-                    MemoryCacheOptions = new MemoryCacheOptions
-                    {
-                        ExpirationScanFrequency = TimeSpan.Zero,
-                        SizeLimit = 20,
-                        CompactionPercentage = 0.5
-                    }
-                });
+            var options = new MemoryCacheOptions
+            {
+                ExpirationScanFrequency = TimeSpan.Zero,
+                SizeLimit = 20,
+                CompactionPercentage = 0.5
+            };
+            var cache = new ApplicationCache(options);
             var cts = new CancellationTokenSource();
 
             var random = new Random();
@@ -160,7 +156,7 @@ namespace laget.Caching.Tests
             Assert.Equal(TaskStatus.RanToCompletion, task1.Status);
             Assert.Equal(TaskStatus.RanToCompletion, task2.Status);
             Assert.Equal(TaskStatus.RanToCompletion, task3.Status);
-            
+
             Assert.InRange(cache.Count(), 0, 20);
         }
 

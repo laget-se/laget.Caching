@@ -1,20 +1,20 @@
-﻿using laget.Caching.Interfaces;
-using laget.Caching.Options;
+﻿using laget.Caching.Keys;
+using laget.Caching.Stores;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace laget.Caching
 {
-    public interface IApplicationCache : ICache
+    public interface IApplicationCache : Interfaces.IMemoryCache
     {
     }
 
-    public class ApplicationCache : Cache, IApplicationCache
+    public class ApplicationCache : Memory<ApplicationKey>, IApplicationCache
     {
         public ApplicationCache()
-            : base()
         {
         }
 
-        public ApplicationCache(CacheOptions options)
+        public ApplicationCache(MemoryCacheOptions options)
             : base(options)
         {
         }

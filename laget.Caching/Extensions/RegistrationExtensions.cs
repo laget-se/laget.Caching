@@ -23,10 +23,6 @@ namespace laget.Caching.Extensions
                 .As<IRequestCache>()
                 .InstancePerLifetimeScope();
 #endif
-
-            builder.RegisterType<SessionCache>()
-                .As<ISessionCache>()
-                .SingleInstance();
         }
 
         public static void RegisterApplicationCacheProvider(this ContainerBuilder builder)
@@ -59,10 +55,6 @@ namespace laget.Caching.Extensions
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
-
-            builder.RegisterType<SessionCache>()
-                .As<ISessionCache>()
-                .SingleInstance();
         }
     }
 }

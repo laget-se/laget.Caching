@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace laget.Caching.Interfaces
 {
@@ -11,17 +10,11 @@ namespace laget.Caching.Interfaces
 
         TItem Set<TItem>(IKey key, object item);
         Task<TItem> SetAsync<TItem>(IKey key, object item);
-        TItem Set<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
-        Task<TItem> SetAsync<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
 
         TItem GetOrSet<TItem>(IKey key, object item);
         Task<TItem> GetOrSetAsync<TItem>(IKey key, object item);
-        TItem GetOrSet<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
-        Task<TItem> GetOrSetAsync<TItem>(IKey key, object item, MemoryCacheEntryOptions options);
         TItem GetOrSet<TItem>(IKey key, Func<TItem> factory);
         Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory);
-        TItem GetOrSet<TItem>(IKey key, Func<TItem> factory, MemoryCacheEntryOptions options);
-        Task<TItem> GetOrSetAsync<TItem>(IKey key, Func<TItem> factory, MemoryCacheEntryOptions options);
 
         void Remove<TItem>(IKey key);
         Task RemoveAsync<TItem>(IKey key);
@@ -30,7 +23,7 @@ namespace laget.Caching.Interfaces
         Task ClearAsync<TItem>();
 
         int Count();
-        Task<int> CountAsync(); 
+        Task<int> CountAsync();
 
         bool Contains<TItem>(IKey key);
         Task<bool> ContainsAsync<TItem>(IKey key);

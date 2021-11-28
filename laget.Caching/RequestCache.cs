@@ -1,5 +1,6 @@
 ﻿using laget.Caching.Interfaces;
-using laget.Caching.Options;
+using laget.Caching.Keys;
+using laget.Caching.Stores;
 
 namespace laget.Caching
 {
@@ -7,15 +8,10 @@ namespace laget.Caching
     {
     }
 
-    public class RequestCache : Cache, IRequestCache
+    public class RequestCache : Dictionary<RequestKey>, IRequestCache
     {
         public RequestCache()
             : base()
-        {
-        }
-
-        public RequestCache(CacheOptions options)
-            : base(options)
         {
         }
     }
