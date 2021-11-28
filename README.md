@@ -21,8 +21,10 @@ var container = builder.Build();
 ## Usage
 #### ApplicationCache (`IApplicationCache`)
 > `Store`: Memory (MemoryCache)
+
 Stores application-specific data, e.g application configuration that only change between deployments/releases.
 
 #### RequestCache (`IRequestCache`)
 > `Store`: Dictionary (ConcurrentDictionary)
+
 Stores request-specific data, e.g. data used for a specific page that is fetched multiple times.
