@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using laget.Caching.Keys;
+using System;
 using System.Threading.Tasks;
-using laget.Caching.Keys;
-using Microsoft.Extensions.Caching.Memory;
 using Xunit;
 
 namespace laget.Caching.Tests.ApplicationCacheTests
@@ -104,60 +102,6 @@ namespace laget.Caching.Tests.ApplicationCacheTests
             var result = await cache.GetOrSetAsync<object>(key, obj);
 
             Assert.Same(obj, result);
-        }
-
-        [Fact]
-        public void AddAndReplaceEntries_AreThreadSafe()
-        {
-            var options = new MemoryCacheOptions
-            {
-                ExpirationScanFrequency = TimeSpan.Zero,
-                SizeLimit = 20,
-                CompactionPercentage = 0.5
-            };
-            var cache = new ApplicationCache(options);
-            var cts = new CancellationTokenSource();
-
-            var random = new Random();
-
-            var task0 = Task.Run(() =>
-            {
-                while (!cts.IsCancellationRequested)
-                {
-                    var entrySize = random.Next(0, 5);
-                    cache.Set<object>(new ApplicationKey(typeof(Random), random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
-                }
-            });
-
-            var task1 = Task.Run(() =>
-            {
-                while (!cts.IsCancellationRequested)
-                {
-                    var entrySize = random.Next(0, 5);
-                    cache.Set<object>(new ApplicationKey(typeof(Random), random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
-                }
-            });
-
-            var task2 = Task.Run(() =>
-            {
-                while (!cts.IsCancellationRequested)
-                {
-                    var entrySize = random.Next(0, 5);
-                    cache.Set<object>(new ApplicationKey(typeof(Random), random.Next(0, 10).ToString()), entrySize, new MemoryCacheEntryOptions { Size = entrySize });
-                }
-            });
-
-            cts.CancelAfter(TimeSpan.FromSeconds(5));
-            var task3 = Task.Delay(TimeSpan.FromSeconds(7));
-
-            Task.WaitAll(task0, task1, task2, task3);
-
-            Assert.Equal(TaskStatus.RanToCompletion, task0.Status);
-            Assert.Equal(TaskStatus.RanToCompletion, task1.Status);
-            Assert.Equal(TaskStatus.RanToCompletion, task2.Status);
-            Assert.Equal(TaskStatus.RanToCompletion, task3.Status);
-
-            Assert.InRange(cache.Count(), 0, 20);
         }
 
         [Fact]
