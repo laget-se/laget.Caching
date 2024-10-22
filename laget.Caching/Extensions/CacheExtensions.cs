@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using laget.Caching.Interfaces;
+﻿using laget.Caching.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
+using System.Threading.Tasks;
 
 namespace laget.Caching.Extensions
 {
-
     public static class CacheExtensions
     {
         public static TItem Get<TItem>(this ICache cache, object key)
